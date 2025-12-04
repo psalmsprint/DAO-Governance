@@ -1,0 +1,85 @@
+# Makefile for DAOVoting Project
+
+# Default network
+-include .env
+
+.PHONY: all test clean deploy format
+
+# Build the project
+build:
+	forge build
+
+# Run all tests
+test:
+	forge test
+
+# Run tests with verbosity
+test-v:
+	forge test -vvvv
+
+# Run specific test
+test-cast-vote:
+	forge test --match-test testCastVote -vvvv
+
+# Run coverage
+coverage:
+	forge coverage
+
+# Format code
+format:
+	forge fmt
+
+# Clean build artifacts
+clean:
+	forge clean
+
+# Deploy to local network
+deploy-local:
+	forge script script/DeployDAOVoting.s.sol --rpc-url http://localhost:8545 --broadcast
+
+# Deploy to testnet
+deploy-sepolia:
+	forge script script/DeployDAOVoting.s.sol --rpc-url $(SEPOLIA_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify
+
+# Start local node
+anvil:
+	anvil
+
+# Install dependencies
+install:
+	forge install
+
+# Update dependencies
+update:
+	forge update
+
+# Gas snapshot
+snapshot:
+	forge snapshot
+
+# Help
+help:
+	@echo "Available commands:"
+	@echo "  make build           - Build the project"
+	@echo "  make test            - Run all tests"
+	@echo "  make test-v          - Run tests with verbose output"
+	@echo "  make coverage        - Generate coverage report"
+	@echo "  make format          - Format Solidity files"
+	@echo "  make clean           - Clean build artifacts"
+	@echo "  make deploy-local    - Deploy to local network"
+	@echo "  make snapshot        - Create gas snapshot"
+	
+# Run tests
+make test
+
+# Run with verbose output
+make test-v
+
+# Build project
+make build
+
+# Format code
+make format
+
+# See all commands
+make help
